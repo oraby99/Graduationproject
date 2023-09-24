@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreatePaymentsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('payments', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('item_id');
+            $table->string('code', 100)->nullable();
+            $table->string('paypal_order_id', 100)->nullable();
+            $table->float('item_price', 8, 2);
+            $table->enum('payment_option', ['stripe', 'paypal']);
+            $table->string('currency', 5);
+            $table->char('buyer_email', 100);
+            $table->longText('item_description', 500);
+            $table->boolean('payment_completed')->default(false);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('payments');
+    }
+}
